@@ -1,0 +1,65 @@
+﻿application: epchat
+version: 1
+runtime: python
+api_version: 1
+
+default_expiration: '3650d'
+
+skip_files: |
+  ^(.*/)?(
+  (app\.yaml)|
+  (app\.yml)|
+  (index\.yaml)|
+  (index\.yml)|
+  (cron\.yaml)|
+  (cron\.yml)|
+  (#.*#)|
+  (.*~)|
+  (.*\.py[co])|
+  (.*\.po)|
+  (.*\.pot)|
+  (\..*)|
+  (app\.yaml\.sample)|
+  (index\.yaml\.sample)|
+  (cron\.yaml\.sample)|
+  (manage\.py)|
+  (TODO)|
+  (TODO\.pdf)|
+  (README)|
+  (README\.pdf)|
+  (LICENSE)|
+  (scripts\/.*)|
+  (docs\/.*)|
+  (content\/management\/.*)|
+  (content\/media\/.*)|
+  (media\/.*)|
+  (Ad\/.*)|
+  (gaegene\/.*)|
+  (kay\/tests\/.*)|
+  )$
+
+
+handlers:
+- url: /remote_api
+  script: $PYTHON_LIB/google/appengine/ext/remote_api/handler.py
+  secure: optional
+  login: admin
+
+- url: /media
+  static_dir: _generated_media
+  secure: optional
+  
+- url: /favicon\.ico
+  static_files: _generated_media/1/global/favicon.ico
+  upload: _generated_media/favicon.ico
+
+- url: /robots\.txt 
+  static_files: _generated_media/1/global/robots.txt
+  upload: _generated_media/robots.txt
+  
+- url: /gaebar/static
+  static_dir: gaebar/static
+
+- url: /.*
+  script: common/appenginepatch/main.py
+  secure: optional
